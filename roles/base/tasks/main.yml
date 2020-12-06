@@ -1,4 +1,20 @@
 ---
+
+- name: install Monaco font
+  aur:
+    name: monaco-ttf
+    user: taylor
+  tags:
+    - font
+
+- name: install Google Chrome
+  become: true
+  aur:
+    name: google-chrome
+    user: taylor
+  tags:
+    - google
+
 - name: Install Utils
   pacman:
     name: '{{ utils }}'
@@ -14,16 +30,30 @@
   tags:
     - aur
 
-- include: ntp.yml
-- include: pip.yml
-- include: zsh.yml
-- include: bash.yml
-- include: snap.yml
-- include: terminator.yml
+# - include: ntp.yml
+# - include: pip.yml
+# - include: zsh.yml
+# - include: bash.yml
+# - include: snap.yml
+# - include: terminator.yml
 
-- name: Creates Workspace directory
-  file:
-    path: /home/{{ user_name }}/Workspace
-    state: directory
-  become_user: '{{ user_name }}'
-  become: yes
+# - name: Creates Workspace directory
+#  file:
+#    path: /home/{{ user_name }}/Workspace
+#    state: directory
+#  become_user: '{{ user_name }}'
+#  become: yes
+
+- name: Install package emacs
+  become: true
+  pacman:
+    name: emacs
+
+- name: Install Monaco
+  become: true
+  script: ../../../aur/install-aur.sh monaco-ttf
+  register: install_result
+  changed_when: install_result.rc == 0
+  failed_when: install_result.rc != 0 and install_result.rc != 255  
+  tags:
+    - aur

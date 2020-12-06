@@ -52,6 +52,12 @@ git clone git@github.com:PauloPortugal/manjaro-playbook.git
 
 ## Run
 
+### install nvidia drivers
+
+```
+sudo mhwd -a pci nonfree 0300
+```
+
 ### Install everything
 ```
 ansible-playbook playbook.yml --extra-vars="user_name=USERNAME user_email=EMAIL" --ask-become-pass
